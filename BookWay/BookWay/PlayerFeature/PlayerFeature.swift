@@ -11,15 +11,15 @@ import ComposableArchitecture
 
 @Reducer
 struct PlayerFeature {
-    
+
     let environment: Environment
-    
+
     init(playerSerice: PlayerService) {
         environment = .live(playerSerice)
     }
-    
+
     //MARK: - State
-    
+
     struct State: Equatable {
         var book: BookModel
         var progress: Double = .zero
@@ -51,30 +51,32 @@ struct PlayerFeature {
         var keyPointTitle: String {
             "Key Point \(currentChapterIndex + 1) of \(numberOfChapters)".uppercased()
         }
-        
+
         var chapterDescription: String {
             currentChapter.map(\.value.description) ?? ""
         }
-        
+
         private var currentChapterIndex: Int {
             currentChapter.flatMap { book.chapters.firstIndex(of: $0.value) } ?? .zero
         }
     }
-    
+
     //MARK: - Action
-    
+
     enum Action: Equatable {
         case onAppear
         case onProgressChange(Double)
         case onTimeChange(Double)
         case scrollToProgress(Double)
+        case updateButtonsState
         case toogleSpeed
         case toggleMode
         case controlsAction(PlayerControlsFeature.Action)
+        case onDisappear
     }
-    
+
     //MARK: - Reducer
-    
+
     var body: some ReducerOf<Self> {
         Scope(
             state: \.controlsState,
@@ -86,7 +88,11 @@ struct PlayerFeature {
             case .onAppear:
                 state.currentChapter
                     .map { environment.setItem($0.value.audioFile) }
-                
+
+                let updateButtonsEffect = Effect.run { send in
+                    await send(Action.updateButtonsState)
+                }
+
                 return Effect.publisher {
                     environment
                         .progress()
@@ -96,8 +102,8 @@ struct PlayerFeature {
                         environment
                             .time()
                             .map(Action.onTimeChange)
-                    }
-                )
+                    }.merge(with: updateButtonsEffect)
+                ).cancellable(id: Cancellable())
 
             case let .onProgressChange(progress):
                 state.progress = progress
@@ -110,16 +116,21 @@ struct PlayerFeature {
             case let .scrollToProgress(progress):
                 environment.scrollTo(progress)
                 return .none
-                
+
+            case .updateButtonsState:
+                state.controlsState.isPrevDisabled = state.currentChapter?.prev == nil
+                state.controlsState.isNextDisabled = state.currentChapter?.next == nil
+                return .none
+
             case .toogleSpeed:
                 state.playbackSpeed.toggle()
                 environment.toggleSpeed()
                 return .none
-                
+
             case .toggleMode:
                 state.isPlayerMode.toggle()
                 return .none
-                
+
             case let .controlsAction(controlAction):
                 switch controlAction {
                 case .prev:
@@ -127,30 +138,40 @@ struct PlayerFeature {
                         state.currentChapter = prev
                         state.currentChapter
                             .map { environment.setItem($0.value.audioFile) }
-                        state.controlsState.isPrevDisabled = state.currentChapter?.prev == nil
-                        state.controlsState.isNextDisabled = state.currentChapter?.next == nil
+                        return Effect.run { send in
+                            await send(.updateButtonsState)
+                        }
                     }
                     return .none
-                    
+
                 case .next:
                     if let next = state.currentChapter?.next {
                         state.currentChapter = next
                         state.currentChapter
                             .map { environment.setItem($0.value.audioFile) }
-                        state.controlsState.isNextDisabled = state.currentChapter?.next == nil
-                        state.controlsState.isPrevDisabled = state.currentChapter?.prev == nil
+                        return Effect.run { send in
+                            await send(.updateButtonsState)
+                        }
                     }
                     return .none
-                    
+
                 case .togglePlay:
                     state.controlsState.isPaused ? environment.play() : environment.pause()
                     return .none
-                    
+
                 case let .rewind(seconds):
                     environment.rewind(Double(seconds))
                     return .none
                 }
+            case .onDisappear:
+                return .cancel(id: Cancellable())
             }
         }
     }
+}
+
+//MARK: - Cancellable
+
+private extension PlayerFeature {
+    struct Cancellable: Hashable {}
 }

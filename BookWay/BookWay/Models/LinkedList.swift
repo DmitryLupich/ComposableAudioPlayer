@@ -12,7 +12,7 @@ import Foundation
 class Node<T: Equatable> {
     var value: T
     var next: Node<T>?
-    var prev: Node<T>?
+    var prev: Node<T>? // should be weak, not retained in struct based SwiftUI properly
 
     init(_ value: T) {
         self.value = value

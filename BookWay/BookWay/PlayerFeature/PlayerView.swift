@@ -34,6 +34,7 @@ struct PlayerView: View {
                             }
                         }
                     }
+                    .onDisappear { viewStore.send(.onDisappear) }
                 }
             }
         }
