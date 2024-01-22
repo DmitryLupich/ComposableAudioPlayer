@@ -11,12 +11,7 @@ import ComposableArchitecture
 
 @Reducer
 struct PlayerFeature {
-
-    let environment: Environment
-
-    init(playerSerice: PlayerService) {
-        environment = .live(playerSerice)
-    }
+    @Dependency(\.playerClient) var playerClient
 
     //MARK: - State
 
@@ -87,20 +82,22 @@ struct PlayerFeature {
             switch action {
             case .onAppear:
                 state.currentChapter
-                    .map { environment.setItem($0.value.audioFile) }
+                    .map { playerClient.setItem($0.value.audioFile) }
 
                 let updateButtonsEffect = Effect.run { send in
                     await send(Action.updateButtonsState)
                 }
 
                 return Effect.publisher {
-                    environment
-                        .progress()
+                    playerClient
+                        .currentProgressPublisher
+                        .eraseToAnyPublisher()
                         .map(Action.onProgressChange)
                 }.merge(
                     with: Effect.publisher {
-                        environment
-                            .time()
+                        playerClient
+                            .currentTimePublisher
+                            .eraseToAnyPublisher()
                             .map(Action.onTimeChange)
                     }.merge(with: updateButtonsEffect)
                 ).cancellable(id: Cancellable())
@@ -114,7 +111,7 @@ struct PlayerFeature {
                 return .none
 
             case let .scrollToProgress(progress):
-                environment.scrollTo(progress)
+                playerClient.scrollTo(progress)
                 return .none
 
             case .updateButtonsState:
@@ -124,7 +121,7 @@ struct PlayerFeature {
 
             case .toogleSpeed:
                 state.playbackSpeed.toggle()
-                environment.toggleSpeed()
+                playerClient.toggleSpeed()
                 return .none
 
             case .toggleMode:
@@ -137,7 +134,7 @@ struct PlayerFeature {
                     if let prev = state.currentChapter?.prev {
                         state.currentChapter = prev
                         state.currentChapter
-                            .map { environment.setItem($0.value.audioFile) }
+                            .map { playerClient.setItem($0.value.audioFile) }
                         return Effect.run { send in
                             await send(.updateButtonsState)
                         }
@@ -148,7 +145,7 @@ struct PlayerFeature {
                     if let next = state.currentChapter?.next {
                         state.currentChapter = next
                         state.currentChapter
-                            .map { environment.setItem($0.value.audioFile) }
+                            .map { playerClient.setItem($0.value.audioFile) }
                         return Effect.run { send in
                             await send(.updateButtonsState)
                         }
@@ -156,11 +153,11 @@ struct PlayerFeature {
                     return .none
 
                 case .togglePlay:
-                    state.controlsState.isPaused ? environment.play() : environment.pause()
+                    state.controlsState.isPaused ? playerClient.play() : playerClient.pause()
                     return .none
 
                 case let .rewind(seconds):
-                    environment.rewind(Double(seconds))
+                    playerClient.rewind(Double(seconds))
                     return .none
                 }
             case .onDisappear:

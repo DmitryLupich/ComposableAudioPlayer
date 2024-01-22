@@ -114,3 +114,15 @@ private extension PlayerService {
         }
     }
 }
+
+//MARK: - Live
+
+extension PlayerService {
+    static let live: PlayerService = .init()
+}
+
+//MARK: - Mock
+//TODO: - Add Mock
+//extension PlayerService {
+//    static let mock: PlayerService = .init()
+//}

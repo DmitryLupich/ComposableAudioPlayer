@@ -61,7 +61,9 @@ private extension PlayerView {
                 .padding(.bottom, 8)
                 .padding(.horizontal, 32)
                 .multilineTextAlignment(.center)
-            
+
+            Spacer()
+
             HStack(spacing: 8) {
                 Text(viewStore.currentTime)
                     .frame(width: 48)
@@ -90,8 +92,6 @@ private extension PlayerView {
             }
             .buttonStyle(GrayButton())
             .padding(.bottom, 32)
-            
-            Spacer()
             
             PlayerControlsView(
                 store: store.scope(

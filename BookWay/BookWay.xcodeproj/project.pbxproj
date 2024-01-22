@@ -24,13 +24,13 @@
 		9089B7DC2B5858F90027EC82 /* LinkedList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9089B7DB2B5858F90027EC82 /* LinkedList.swift */; };
 		9089B7DE2B587D6A0027EC82 /* ModeSwitch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9089B7DD2B587D6A0027EC82 /* ModeSwitch.swift */; };
 		90DBD21F2B59693700D5959D /* PlayerControlsFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90DBD21E2B59693700D5959D /* PlayerControlsFeature.swift */; };
-		90DBD2212B596D0400D5959D /* PlayerEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90DBD2202B596D0400D5959D /* PlayerEnvironment.swift */; };
 		90DBD2242B59752B00D5959D /* Double+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90DBD2232B59752B00D5959D /* Double+Extensions.swift */; };
 		90DBD2262B59818200D5959D /* sample1.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 90DBD2252B59818200D5959D /* sample1.mp3 */; };
 		90DBD22B2B5981A500D5959D /* sample2.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 90DBD2272B5981A400D5959D /* sample2.mp3 */; };
 		90DBD22C2B5981A500D5959D /* sample4.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 90DBD2282B5981A400D5959D /* sample4.mp3 */; };
 		90DBD22D2B5981A500D5959D /* sample5.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 90DBD2292B5981A500D5959D /* sample5.mp3 */; };
 		90DBD22E2B5981A500D5959D /* sample3.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 90DBD22A2B5981A500D5959D /* sample3.mp3 */; };
+		90DBD2312B5EFEAB00D5959D /* Dependencies.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90DBD2302B5EFEAB00D5959D /* Dependencies.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -70,13 +70,13 @@
 		9089B7DB2B5858F90027EC82 /* LinkedList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkedList.swift; sourceTree = "<group>"; };
 		9089B7DD2B587D6A0027EC82 /* ModeSwitch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModeSwitch.swift; sourceTree = "<group>"; };
 		90DBD21E2B59693700D5959D /* PlayerControlsFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerControlsFeature.swift; sourceTree = "<group>"; };
-		90DBD2202B596D0400D5959D /* PlayerEnvironment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerEnvironment.swift; sourceTree = "<group>"; };
 		90DBD2232B59752B00D5959D /* Double+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Double+Extensions.swift"; sourceTree = "<group>"; };
 		90DBD2252B59818200D5959D /* sample1.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = sample1.mp3; sourceTree = "<group>"; };
 		90DBD2272B5981A400D5959D /* sample2.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = sample2.mp3; sourceTree = "<group>"; };
 		90DBD2282B5981A400D5959D /* sample4.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = sample4.mp3; sourceTree = "<group>"; };
 		90DBD2292B5981A500D5959D /* sample5.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = sample5.mp3; sourceTree = "<group>"; };
 		90DBD22A2B5981A500D5959D /* sample3.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = sample3.mp3; sourceTree = "<group>"; };
+		90DBD2302B5EFEAB00D5959D /* Dependencies.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dependencies.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -131,6 +131,7 @@
 				9089B7922B56FF620027EC82 /* BookWayApp.swift */,
 				9089B7BC2B56FF7F0027EC82 /* PlayerFeature */,
 				9089B7C12B56FFF20027EC82 /* PlayerControlsFeature */,
+				90DBD22F2B5EFE9B00D5959D /* Dependencies */,
 				9089B7D82B581DF00027EC82 /* Services */,
 				9089B7CB2B57A47E0027EC82 /* Models */,
 				9089B7C72B5705DC0027EC82 /* Resources */,
@@ -172,7 +173,6 @@
 			children = (
 				9089B7BF2B56FF990027EC82 /* PlayerView.swift */,
 				9089B7BD2B56FF8B0027EC82 /* PlayerFeature.swift */,
-				90DBD2202B596D0400D5959D /* PlayerEnvironment.swift */,
 			);
 			path = PlayerFeature;
 			sourceTree = "<group>";
@@ -239,6 +239,14 @@
 				90DBD2232B59752B00D5959D /* Double+Extensions.swift */,
 			);
 			path = Extensions;
+			sourceTree = "<group>";
+		};
+		90DBD22F2B5EFE9B00D5959D /* Dependencies */ = {
+			isa = PBXGroup;
+			children = (
+				90DBD2302B5EFEAB00D5959D /* Dependencies.swift */,
+			);
+			path = Dependencies;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -382,9 +390,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				90DBD2312B5EFEAB00D5959D /* Dependencies.swift in Sources */,
 				9089B7CD2B57A4950027EC82 /* BookModel.swift in Sources */,
 				90DBD2242B59752B00D5959D /* Double+Extensions.swift in Sources */,
-				90DBD2212B596D0400D5959D /* PlayerEnvironment.swift in Sources */,
 				90DBD21F2B59693700D5959D /* PlayerControlsFeature.swift in Sources */,
 				9089B7D52B57AEF40027EC82 /* ButtonStyle.swift in Sources */,
 				9089B7DC2B5858F90027EC82 /* LinkedList.swift in Sources */,

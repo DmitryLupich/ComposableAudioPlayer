@@ -10,9 +10,6 @@ import ComposableArchitecture
 
 @main
 struct BookWayApp: App {
-    //TODO: - Move to some DI container or Assembly object
-    private let playerService = PlayerService()
-
     var body: some Scene {
         WindowGroup {
             PlayerView(
@@ -23,7 +20,13 @@ struct BookWayApp: App {
                         isPlayerMode: true,
                         controlsState: PlayerControlsFeature.State()
                     ),
-                    reducer: { PlayerFeature(playerSerice: playerService) }
+                    reducer: {
+                        PlayerFeature()
+                            .dependency(
+                                \.playerClient,
+                                 .live
+                            )
+                    }
                 )
             )
         }

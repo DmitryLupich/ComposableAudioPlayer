@@ -28,7 +28,7 @@ extension BookModel {
             Chapter(
                 description: "Design is not how a thing looks, but how it works",
                 audioFile: "sample1",
-                duration: 290
+                duration: 291
             ),
             Chapter(
                 description: "Chapter 2",
@@ -43,7 +43,7 @@ extension BookModel {
             Chapter(
                 description: "Chapter 4",
                 audioFile: "sample4",
-                duration: 99
+                duration: 100
             ),
             Chapter(
                 description: "Chapter 5",
